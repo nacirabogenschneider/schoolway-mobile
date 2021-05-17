@@ -9,9 +9,9 @@ function AppButton({ title, onPress, color = "deeppink" }:any) {
   return (
     <>
       {!netInfo.isConnected && !netInfo.isInternetReachable ? (
-      <Button mode='outlined' style={{width: 200, marginLeft: 12, marginTop: 10}} onPress={onPress}> No internet Connection found</Button>
+      <Button mode='outlined' style={{width: 200,  marginTop: 10, backgroundColor:'white'}} onPress={onPress}> No internet</Button>
       ) : (
-      <Button mode='outlined' style={{width: 200, marginLeft: 12, marginTop: 10}} onPress={onPress}>{title}</Button>
+      <Button mode='outlined' style={{width: 200,  marginTop: 10, backgroundColor:'white'}} onPress={onPress}>{title}</Button>
       )}
     </>
   );

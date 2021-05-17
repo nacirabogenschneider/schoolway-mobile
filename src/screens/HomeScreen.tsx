@@ -1,26 +1,19 @@
-import React from 'react'
-import { StyleSheet, Text, SafeAreaView, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { Colors , Button} from 'react-native-paper';
-import Form from '../components/Form';
-import Map from '../components/Map'
+import React from "react";
+import { View } from "react-native";
+import styled from "styled-components";
+import Map from "../components/Map";
 
 export default function HomeScreen() {
-   
-    return (
-        
-        <View style={styles.container}>
-          <Map/>
-        </View>
-    )
+  return (
+    <MainView>
+      <Map />
+    </MainView>
+  );
 }
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      height: '100%',
-      width:'100%',
-      backgroundColor: 'white',
-      alignItems: 'center',
-    }
-  });
-  
+
+const MainView = styled(View)`
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+`;

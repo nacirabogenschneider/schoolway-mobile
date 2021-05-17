@@ -1,38 +1,44 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
-import React, {useState} from 'react';
-// import 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { useNetInfo } from "@react-native-community/netinfo";
+import { Text ,View} from 'react-native';
+import React, { Suspense } from 'react';
+import StartScreen from './src/screens/StartScreen'
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import { Provider } from 'react-redux'
+import thunk from "redux-thunk";
+import { persistReducer, persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/es/integration/react";
 
+import { schoolsReducer} from './src/store/reducers/schools'
+import { usersReducer } from './src/store/reducers/user';
+import { modeReducer } from './src/store/reducers/mode';
 
-import HomeScreen from './src/screens/HomeScreen';
-import { Provider as PaperProvider } from 'react-native-paper';
-import Form from './src/components/Form';
-import AppNavigation from './src/navigation/AppNavigation';
-import DrawerNavigation from './src/navigation/DrawerNavigation';
+const rootReducer = combineReducers({
+  schools: schoolsReducer,
+  users: usersReducer,
+  mode: modeReducer,
+});
 
+const persistConfig = {
+  key: "root",
+  storage: AsyncStorage,
+  whiteList: [
+    "usersReducer",
+    "schoolsReducer",
+    "modeReducer"
+  ],
+};
+const storageReducer = persistReducer(persistConfig, rootReducer);
+const store = createStore(storageReducer, applyMiddleware(thunk));
+const storageStore = persistStore(store);
 export default function App() {
-  
-  // const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true)
-  const netInfo = useNetInfo();
-  const isLoggedIn: boolean=true
   return (
-    <NavigationContainer>
-      <PaperProvider>
-      {!netInfo.isConnected || !netInfo.isInternetReachable ? (
-          <Text>No internet connection found</Text>
-        ) : null}
-        {!isLoggedIn && <Form />}
-        {isLoggedIn && (
-          <>
-        <DrawerNavigation/>
-           {/* <TabNavigation /> */}
-          <StatusBar style="auto" /></>
-        )}
-      </PaperProvider>
-    </NavigationContainer>
+    <Suspense fallback={<Text>Loading ...</Text>}>
+      <Provider store={store}>
+        <PersistGate persistor={storageStore} loading={null}>
+            <StartScreen/>
+        </PersistGate>
+      </Provider>
+    </Suspense>
   );
 }
 

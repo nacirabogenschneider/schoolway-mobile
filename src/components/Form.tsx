@@ -6,7 +6,7 @@ import AppForm from './AppForm';
 import * as Yup from "yup";
 import AppFormField from './AppFormField';
 import SubmitButton from './SubmitButton';
-import { Button } from 'react-native-paper';
+
 
 
 export default function Form() {
@@ -22,8 +22,8 @@ export default function Form() {
     password: Yup.string().required("A password is required"),
   });
     return (
-        <View style={{  marginTop: 240, flex:1}}>
-            <AppForm
+        <View style={{  marginTop: 240, flex:1, alignItems:'center' }}>
+            <AppForm 
         initialValues={{ debtor_number: "", user_number: "", password: "" }}
         onSubmit={(values:any) => handleLoginPress(values)}
         validationSchema={validationSchema}
